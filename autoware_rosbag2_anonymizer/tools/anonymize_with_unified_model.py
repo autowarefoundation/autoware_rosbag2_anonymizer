@@ -51,7 +51,10 @@ def anonymize_with_unified_model(config_data, json_data, device) -> None:
                 writer.write_any(msg.data, msg.type, msg.topic, msg.timestamp)
             else:
                 # Convert image msg to cv.Mat
-                image = cv_bridge.CvBridge().compressed_imgmsg_to_cv2(msg.data)
+                if "Compressed" in msg.type:
+                    image = cv_bridge.CvBridge().compressed_imgmsg_to_cv2(msg.data)
+                else:
+                    image = cv_bridge.CvBridge().imgmsg_to_cv2(msg.data)
 
                 # Find bounding boxes with Unified Model
                 detections = unified_language_model(image)
