@@ -14,7 +14,7 @@ class OpenClipModel:
         )
         self.tokenizer = open_clip.get_tokenizer("ViT-B-32")
 
-    def __call__(self, image: Image.Image, promt: list[str]) -> torch.Any:
+    def __call__(self, image: Image.Image, promt: list[str]) -> torch.Tensor:
         image = self.preprocess(image).unsqueeze(0).to(self.device)
         text = self.tokenizer(promt).to(self.device)
 
