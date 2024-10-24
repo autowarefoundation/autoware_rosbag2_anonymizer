@@ -44,7 +44,10 @@ def yolo_anonymize(config_data, json_data, device) -> None:
         if not is_image:
             writer.write_any(msg.data, msg.type, msg.topic, msg.timestamp)
         else:
-            image = cv_bridge.CvBridge().compressed_imgmsg_to_cv2(msg.data)
+            if "Compressed" in msg.type:
+                image = cv_bridge.CvBridge().compressed_imgmsg_to_cv2(msg.data)
+            else:
+                image = cv_bridge.CvBridge().imgmsg_to_cv2(msg.data)
 
             detections = yolo_model(image, confidence=yolo_confidence)
 
